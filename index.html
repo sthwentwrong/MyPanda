@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Hello My Panda!</title>
+  <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/global.css">
+  <link rel="stylesheet" href="assets/css/nav.css">
+  <link rel="stylesheet" href="assets/css/about.css">
+
+  <link rel="import" href="sections/about.html">
+
+</head>
+
+<body>
+
+  <nav class="nav js-nav">
+    <header class="nav-header">
+      <h1 class="nav-title">MyPanda</h1>
+      <svg class="nav-header-icon">
+        <use xlink:href="assets/img/icons.svg#icon-electron"></use>
+      </svg>
+      <h1><strong>Bamboo is delicious!</strong></h1>
+    </header>
+
+    <div class="nav-item u-category-windows">
+      <h5 class="nav-category">
+        <svg class="nav-icon">
+          <use xlink:href="assets/img/icons.svg#icon-windows"></use>
+        </svg>
+        Windows
+      </h5>
+      <button type="button" id="button-windows" data-section="windows" class="nav-button">Create and manage
+        <em>windows</em></button>
+      <button type="button" id="button-crash-hang" data-section="crash-hang" class="nav-button">Handling window
+        <em>crashes and hangs</em></button>
+    </div>
+
+    <div class="nav-item u-category-menu">
+      <h5 class="nav-category">
+        <svg class="nav-icon">
+          <use xlink:href="assets/img/icons.svg#icon-menu"></use>
+        </svg>
+        Menus
+      </h5>
+      <button type="button" id="button-menus" data-section="menus" class="nav-button">Customize <em>menus</em> </button>
+      <button type="button" id="button-shortcuts" data-section="shortcuts" class="nav-button">Register keyboard
+        <em>shortcuts</em></button>
+    </div>
+
+    <footer class="nav-footer">
+      <button type="button" id="button-about" data-modal="about" class="nav-footer-button">About</button>
+    </footer>
+  </nav>
+
+  <main class="content js-content">
+    <button id="basic">Basic Notification</button>
+    
+  </main>
+
+
+  <script>
+    require('./assets/imports')
+    require('./assets/nav')
+    require('./assets/mynotification')
+
+    function handleLoad(e) {
+      console.log('Loaded import: ' + e.target.href);
+    }
+    function handleError(e) {
+      console.log('Error loading import: ' + e.target.href);
+    }
+    // const links = document.querySelectorAll('link[rel="import"]')
+
+    // // Import and add each page to the DOM
+    // Array.prototype.forEach.call(links, (link) => {
+    //   let template = link.import.querySelector('.task-template')
+    //   let clone = document.importNode(template.content, true)
+    //   if (link.href.match('about.html')) {
+    //     document.querySelector('body').appendChild(clone)
+    //   } else {
+    //     document.querySelector('.content').appendChild(clone)
+    //   }
+    // })
+  </script>
+
+</body>
+
+</html>

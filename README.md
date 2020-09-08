@@ -1,2 +1,1 @@
-# MyPanda
-xxxx
+npm install --save-dev electron
