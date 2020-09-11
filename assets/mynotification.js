@@ -1,9 +1,23 @@
 
 const os = require('os');
-const fs = require('fs')
+const fs = require('fs');
 const path = require('path');
 
- 
+
+function notify(message) {
+  if (!message) {
+    message = 'unknown message.';
+  }
+  options = [
+    {
+      title: "Basic Notification",
+      body: message
+    }
+  ];
+  var notification = new Notification(options[0].title, options[0]);
+  notification.show();
+}
+
 function doNotify(evt) {
   switch (evt.srcElement.id) {
     case "basic": {
@@ -12,15 +26,15 @@ function doNotify(evt) {
           title: "Basic Notification",
           body: os.arch()
         }
-      ]
+      ];
       new Notification(options[0].title, options[0]);
       break;
     }
     case "createpath": {
-      createFolder()
+      createFolder();
       break;
     }
-    case "listprojs":{
+    case "listprojs": {
       listProjs();
       break;
     }
@@ -37,17 +51,19 @@ document.addEventListener('DOMContentLoaded', function () {
 })
 
 function createFolder(folderPath) {
-  dirPath = path.join(process.cwd(), 'projects')
+  dirPath = path.join(process.cwd(), 'projects');
   if (!fs.existsSync(dirPath)) {
     fs.mkdirSync(dirPath, function (err) {
       if (err) {
         return console.log(err);
       }
-      document.getElementById("cresult").innerHTML = 'success'
+      notify('create folder successfully.');
+      document.getElementById("cresult").innerHTML = 'success';
     });
   } else {
-    document.getElementById("cresult").innerHTML = 'the path existed'
-    console.log('the path existed')
+    document.getElementById("cresult").innerHTML = 'the path existed';
+    notify('the path existed');
+    console.log('the path existed');
   }
 }
 
@@ -74,12 +90,12 @@ function walkDir(currentDirPath, callback) {
 function listProjs() {
   // document.getElementById("listprojs")
   var dirPath = path.join(process.cwd(), 'projects');
-  console.log('dir path:${dirPath}' + dirPath)
+  console.log('dir path:${dirPath}' + dirPath);
   var container = document.getElementById("listprojects");
-  container.textContent='';
+  container.textContent = '';
   walkDir(dirPath, function (filePath, stat) {
     // filearr.push(filePath);
-    console.log(filePath);
+    // console.log(filePath);
     var d = document.createElement("div");
     d.textContent = filePath;
     document.getElementById("listprojects").appendChild(d);
