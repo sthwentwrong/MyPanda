@@ -33,9 +33,6 @@ eventEmitter.on('data_received', function(){
 console.log('received successfully.');
 });
 
-
-
-
 setTimeout(() => {
     eventEmitter.emit('connection');
     console.log('execution done.')

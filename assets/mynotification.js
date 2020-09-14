@@ -67,9 +67,45 @@ function createFolder(folderPath) {
   }
 }
 
+function getfiles(dir, recursive, callback){
+  fs.readdir(dir, function (err, files) {
+    if (err) {
+      console.log(err.message);
+      throw new Error(err);
+    }
+
+    files.forEach(function (name) {
+      var filePath = path.join(dir, name);
+      var stat = fs.statSync(filePath);
+      if (stat.isFile()){
+        callback(filePath)
+      } else if(stat.isDirectory() && recursive){
+        getdirs(filePath, recursive, callback);
+      }
+    });
+  });
+}
+
+function getdirs(dir, recursive, callback){
+  fs.readdir(dir, function (err, files) {
+    if (err) {
+      console.log(err.message);
+      throw new Error(err);
+    }
+    files.forEach(function (name) {
+      var filePath = path.join(dir, name);
+      var stat = fs.statSync(filePath);
+      if (stat.isDirectory()){
+        callback(filePath)
+        if(recursive){
+          getdirs(filePath, recursive, callback);
+        }
+      }
+    });
+  });
+}
+
 function walkDir(currentDirPath, callback) {
-  var fs = require('fs'),
-    path = require('path');
   fs.readdir(currentDirPath, function (err, files) {
     if (err) {
       console.log(err.message);
@@ -90,15 +126,15 @@ function walkDir(currentDirPath, callback) {
 function listProjs() {
   // document.getElementById("listprojs")
   var dirPath = path.join(process.cwd(), 'projects');
-  console.log('dir path:${dirPath}' + dirPath);
+  console.log('dir path: ' + dirPath);
   var container = document.getElementById("listprojects");
   container.textContent = '';
   walkDir(dirPath, function (filePath, stat) {
     // filearr.push(filePath);
-    // console.log(filePath);
-    var d = document.createElement("div");
-    d.textContent = filePath;
-    document.getElementById("listprojects").appendChild(d);
+    console.log(filePath);
+    // var d = document.createElement("div");
+    // d.textContent = filePath;
+    // document.getElementById("listprojects").appendChild(d);
   })
   // console.log(filearr);
 }
