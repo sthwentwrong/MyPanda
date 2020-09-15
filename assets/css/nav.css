@@ -36,9 +36,9 @@
   
   .nav-header-icon {
     position: absolute;
-    width: 36px;
-    height: 36px;
-    top: 1.5rem; /* magic */
+    width: 48px;
+    height: 48px;
+    top: 2.75rem; /* magic */
     right: 1.75rem; /* magic */
   }
   

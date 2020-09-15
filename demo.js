@@ -42,6 +42,8 @@ getfiles(mypath, true, function (err, file, stats) {
     }
 });
 
+console.log(process.env);
+
 // fl.forEach(function (s) {
 //     console.log(s);
 // })

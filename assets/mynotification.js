@@ -2,7 +2,7 @@
 const os = require('os');
 const fs = require('fs');
 const path = require('path');
-
+const shell = require('electron').shell
 
 function notify(message) {
   if (!message) {
@@ -44,12 +44,6 @@ function doNotify(evt) {
   }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-  document.getElementById("basic").addEventListener("click", doNotify);
-  document.getElementById("createpath").addEventListener("click", doNotify);
-  document.getElementById("listprojs").addEventListener("click", doNotify);
-})
-
 function createFolder(folderPath) {
   dirPath = path.join(process.cwd(), 'projects');
   if (!fs.existsSync(dirPath)) {
@@ -67,7 +61,7 @@ function createFolder(folderPath) {
   }
 }
 
-function getfiles(dir, recursive, callback){
+function getfiles(dir, recursive, callback) {
   fs.readdir(dir, function (err, files) {
     if (err) {
       console.log(err.message);
@@ -77,16 +71,16 @@ function getfiles(dir, recursive, callback){
     files.forEach(function (name) {
       var filePath = path.join(dir, name);
       var stat = fs.statSync(filePath);
-      if (stat.isFile()){
+      if (stat.isFile()) {
         callback(filePath)
-      } else if(stat.isDirectory() && recursive){
+      } else if (stat.isDirectory() && recursive) {
         getdirs(filePath, recursive, callback);
       }
     });
   });
 }
 
-function getdirs(dir, recursive, callback){
+function getdirs(dir, recursive, callback) {
   fs.readdir(dir, function (err, files) {
     if (err) {
       console.log(err.message);
@@ -95,9 +89,9 @@ function getdirs(dir, recursive, callback){
     files.forEach(function (name) {
       var filePath = path.join(dir, name);
       var stat = fs.statSync(filePath);
-      if (stat.isDirectory()){
+      if (stat.isDirectory()) {
         callback(filePath)
-        if(recursive){
+        if (recursive) {
           getdirs(filePath, recursive, callback);
         }
       }
@@ -139,3 +133,69 @@ function listProjs() {
   // console.log(filearr);
 }
 
+var default_projects_cabin = path.join(process.cwd(), 'projects');
+
+document.getElementById("span_default_projects_cabin").textContent = default_projects_cabin;
+
+const demoBtns = document.querySelectorAll('.js-container-target')
+Array.prototype.forEach.call(demoBtns, (btn) => {
+  btn.addEventListener('click', (event) => {
+    const parent = event.target.parentElement
+
+    // Toggles the "is-open" class on the demo's parent element.
+    parent.classList.toggle('is-open')
+  })
+})
+
+
+
+const links = document.querySelectorAll('a[href]')
+
+Array.prototype.forEach.call(links, (link) => {
+  const url = link.getAttribute('href')
+  if (url.indexOf('http') === 0) {
+    link.addEventListener('click', (e) => {
+      e.preventDefault()
+      shell.openExternal(url)
+    })
+  }
+})
+
+
+function appendData(data) {
+  var mainContainer = document.getElementById("listprojects");
+  mainContainer.innerHTML = '';
+  for (var i = 0; i < data.length; i++) {
+    var div = document.createElement("div");
+    div.innerHTML = 'Name: ' + data[i];
+    mainContainer.appendChild(div);
+  }
+}
+
+function getProjs(dir) {
+
+  var results = [];
+
+  fs.readdirSync(dir).forEach(function (file) {
+
+    file = dir + '/' + file;
+    var stat = fs.statSync(file);
+
+    if (stat && stat.isDirectory()) {
+      results.push(file)
+      // results = results.concat(_getAllFilesFromFolder(file))
+    } else results.push(file);
+
+  });
+  console.log(results);
+  appendData(results);
+  // notify("loading success.");
+  return results;
+};
+
+// span_default_projects_cabin
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById("basic").addEventListener("click", doNotify);
+  document.getElementById("createpath").addEventListener("click", doNotify);
+  document.getElementById("listprojs").addEventListener("click", getProjs(default_projects_cabin));
+});

@@ -1,20 +1,5 @@
 const { app, BrowserWindow } = require('electron')
 
-var app_menu = [
-    {
-        label: 'File',
-        submenu:[
-            {
-                lable:'Open',
-                accelerator: 'CmdOrCtrl+O',
-                click:()=>{
-                    Electron.dialog.showOpenDialog({properties:['openFile', 'openDirectory', 'multiSelections' ]})
-                }
-            }
-        ]
-    }
-];
-
 function createWindow() {
     // Create the browser window.
     const win = new BrowserWindow({
