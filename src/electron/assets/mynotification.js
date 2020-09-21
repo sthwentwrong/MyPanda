@@ -4,6 +4,8 @@ const fs = require('fs');
 const path = require('path');
 const shell = require('electron').shell
 
+const { aboutWin } = require('electron')
+
 function notify(message) {
   if (!message) {
     message = 'unknown message.';
@@ -141,13 +143,10 @@ const demoBtns = document.querySelectorAll('.js-container-target')
 Array.prototype.forEach.call(demoBtns, (btn) => {
   btn.addEventListener('click', (event) => {
     const parent = event.target.parentElement
-
     // Toggles the "is-open" class on the demo's parent element.
     parent.classList.toggle('is-open')
   })
 })
-
-
 
 const links = document.querySelectorAll('a[href]')
 
@@ -193,9 +192,18 @@ function getProjs(dir) {
   return results;
 };
 
+
+const aboutbtn = document.querySelector("#button-about");
+const ipc = require('electron').ipcRenderer;
+aboutbtn.onclick = () => {
+  ipc.send('displayAbout')
+}
+
+
 // span_default_projects_cabin
 document.addEventListener('DOMContentLoaded', function () {
   document.getElementById("basic").addEventListener("click", doNotify);
   document.getElementById("createpath").addEventListener("click", doNotify);
   document.getElementById("listprojs").addEventListener("click", getProjs(default_projects_cabin));
+  // document.getElementById("button-about").addEventListener("click", displayAboutPage);
 });

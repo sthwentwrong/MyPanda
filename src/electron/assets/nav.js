@@ -1,13 +1,13 @@
 
-document.body.addEventListener('click', (event) => {
-    if (event.target.dataset.section) {
-        handleSectionTrigger(event)
-    } else if (event.target.dataset.modal) {
-        handleModalTrigger(event)
-    } else if (event.target.classList.contains('modal-hide')) {
-        hideAllModals()
-    }
-})
+// document.body.addEventListener('click', (event) => {
+    // if (event.target.dataset.section) {
+    //     handleSectionTrigger(event)
+    // } else if (event.target.dataset.modal) {
+    //     handleModalTrigger(event)
+    // } else if (event.target.classList.contains('modal-hide')) {
+    //     // hideAllModals()
+    // }
+// })
 
 function handleSectionTrigger(event) {
     hideAllSectionsAndDeselectButtons()
@@ -24,15 +24,21 @@ function handleSectionTrigger(event) {
     // settings.set('activeSectionButtonId', buttonId)
 }
 
+
+
 function handleModalTrigger(event) {
     hideAllModals()
     const modalId = `${event.target.dataset.modal}-modal`
     console.log(modalId)
-    modalpage = document.getElementById(modalId)
-    if (modalpage !=undefined){
-        modalpage.classList.add('is-shown')
+    if (modalId == 'about-modal') {
+        // displayAboutPage()
     }
-    
+    else {
+        modalpage = document.getElementById(modalId)
+        if (modalpage != undefined) {
+            modalpage.classList.add('is-shown')
+        }
+    }
 }
 
 function showMainContent() {
@@ -58,10 +64,6 @@ function hideAllSectionsAndDeselectButtons() {
     Array.prototype.forEach.call(buttons, (button) => {
         button.classList.remove('is-selected')
     })
-}
-
-function displayAbout() {
-    document.querySelector('#about-modal').classList.add('is-shown')
 }
 
 showMainContent()
