@@ -204,6 +204,6 @@ aboutbtn.onclick = () => {
 document.addEventListener('DOMContentLoaded', function () {
   document.getElementById("basic").addEventListener("click", doNotify);
   document.getElementById("createpath").addEventListener("click", doNotify);
-  document.getElementById("listprojs").addEventListener("click", getProjs(default_projects_cabin));
+  // document.getElementById("listprojs").addEventListener("click", getProjs(default_projects_cabin));
   // document.getElementById("button-about").addEventListener("click", displayAboutPage);
 });

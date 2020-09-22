@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { app, BrowserWindow } = require('electron')
+const glob = require('glob')
 
 console.log(process.argv);
 const logger = require('electron-log');
@@ -16,6 +17,8 @@ function initialize() {
 
     logger.info("set single instance. ")
     makeSingleInstance()
+
+    loadMainProcess()
 
     function createWindow() {
         const windowOptions = {
@@ -79,11 +82,12 @@ function makeSingleInstance() {
 }
 
 function setupLogger() {
-
     logger.transports.file.level = true;
-    // Same as for console transport
-    logger.transports.file.level = 'info';
+    logger.transports.console.level = true;
+
     // logger.transports.file.format = '{h}:{i}:{s}:{ms} {text}';
+    logger.transports.file.format = '[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}]{scope} {text}';
+    logger.transports.console.format = '[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}]{scope} {text}';
 
     // Set approximate maximum log size in bytes. When it exceeds,
     // the archived log will be saved as the log.old.log file
@@ -117,4 +121,11 @@ function setupLogger() {
 // })
 
 
+// Require each JS file in the main-process dir
+function loadMainProcess () {
+    const files = glob.sync(path.join(__dirname, 'main-process/**/*.js'))
+    files.forEach((file) => { require(file) })
+  }
+
+  
 initialize()

@@ -9,4 +9,10 @@ function getCpu() {
     }
 }
 
-exports.getCpu = getCpu
+const ipc = require('electron').ipcMain;
+
+ipc.on('get-cpu-info', function (event, arg) {
+    event.sender.send('cpu-info-reply', getCpu())
+})
+
+// exports.getCpu = getCpu
